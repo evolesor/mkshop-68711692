@@ -38,6 +38,12 @@ const routes = [
     component: () => import("../views/ReportChart.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/category_edit",
+    name: "Category_edit",
+    component: () => import("../views/Category_edit.vue"),
+    meta: { requiresAuth: true },
+  }
 ];
 
 const router = createRouter({

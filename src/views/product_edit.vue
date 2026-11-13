@@ -8,10 +8,10 @@
 
       <div class="d-flex align-items-center">
         <label class="me-2 fw-bold">ประเภทสินค้า:</label>
-        <select v-model="selectedCategory" class="form-select w-auto">
+        <select v-model="selectedproduct" class="form-select w-auto">
           <option value="">ทั้งหมด</option>
-          <option v-for="cat in categories" :key="cat.category_id" :value="cat.category_name">
-            {{ cat.category_name }}
+          <option v-for="cat in categories" :key="cat.product_id" :value="cat.product_name">
+            {{ cat.product_name }}
           </option>
         </select>
       </div>
@@ -43,7 +43,7 @@
         <tr v-for="product in paginatedProducts" :key="product.product_id">
           <td>{{ product.product_id }}</td>
           <td>{{ product.product_name }}</td>
-          <td>{{ product.category_name || '-' }}</td>
+          <td>{{ product.product_name || '-' }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.stock }}</td>
           <td>
@@ -106,10 +106,10 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">ประเภทสินค้า</label>
-                <select v-model="editForm.category_id" class="form-select" required>
+                <select v-model="editForm.product_id" class="form-select" required>
                   <option disabled value="">-- เลือกประเภท --</option>
-                  <option v-for="cat in categories" :key="cat.category_id" :value="cat.category_id">
-                    {{ cat.category_name }}
+                  <option v-for="cat in categories" :key="cat.product_id" :value="cat.product_id">
+                    {{ cat.product_name }}
                   </option>
                 </select>
               </div>
@@ -153,13 +153,13 @@ export default {
   setup() {
     const products = ref([]);
     const categories = ref([]);
-    const selectedCategory = ref("");
+    const selectedproduct = ref("");
     const loading = ref(true);
     const error = ref(null);
 
     // Modal & Form
     const isEditMode = ref(false);
-    const editForm = ref({ product_id: null, product_name: "", price: "", stock: "", image: "", category_id: "" });
+    const editForm = ref({ product_id: null, product_name: "", price: "", stock: "", image: "", product_id: "" });
     const newImageFile = ref(null);
     let modalInstance = null;
 
@@ -168,8 +168,8 @@ export default {
     const itemsPerPage = ref(5);
 
     const filteredProducts = computed(() => {
-      if (!selectedCategory.value) return products.value;
-      return products.value.filter((p) => p.category_name === selectedCategory.value);
+      if (!selectedproduct.value) return products.value;
+      return products.value.filter((p) => p.product_name === selectedproduct.value);
     });
 
     const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage.value));
@@ -199,7 +199,7 @@ export default {
     // ✅ เปิด modal เพิ่มสินค้า
     const openAddModal = () => {
       isEditMode.value = false;
-      editForm.value = { product_id: null, product_name: "", price: "", stock: "", image: "", category_id: "" };
+      editForm.value = { product_id: null, product_name: "", price: "", stock: "", image: "", product_id: "" };
       newImageFile.value = null;
 
       // เคลียร์ค่าไฟล์ input
@@ -214,7 +214,7 @@ export default {
     // ✅ เปิด modal แก้ไขสินค้า
     const openEditModal = (product) => {
       isEditMode.value = true;
-      editForm.value = { ...product, category_id: product.category_id };
+      editForm.value = { ...product, product_id: product.product_id };
       newImageFile.value = null;
 
       // เคลียร์ input file
@@ -236,7 +236,7 @@ export default {
       formData.append("product_name", editForm.value.product_name);
       formData.append("price", editForm.value.price);
       formData.append("stock", editForm.value.stock);
-      formData.append("category_id", editForm.value.category_id);
+      formData.append("product_id", editForm.value.product_id);
       if (newImageFile.value) formData.append("image", newImageFile.value);
 
       try {
@@ -248,7 +248,7 @@ export default {
         modalInstance.hide();
 
         // ✅ เคลียร์ค่าฟอร์มและรูปหลังบันทึก
-        editForm.value = { product_id: null, product_name: "", price: "", stock: "", image: "", category_id: "" };
+        editForm.value = { product_id: null, product_name: "", price: "", stock: "", image: "", product_id: "" };
         newImageFile.value = null;
         const fileInput = document.querySelector('#editModal input[type="file"]');
         if (fileInput) fileInput.value = "";
@@ -279,7 +279,7 @@ export default {
     onMounted(fetchProducts);
 
     return {
-      products, categories, selectedCategory, loading, error,
+      products, categories, selectedproduct, loading, error,
       isEditMode, editForm, openAddModal, openEditModal, saveProduct, deleteProduct, handleFileUpload,
       paginatedProducts, totalPages, currentPage, itemsPerPage, goToPage, prevPage, nextPage
     };
