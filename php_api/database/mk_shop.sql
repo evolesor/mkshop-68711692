@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2025 at 08:16 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.0.23
+-- Generation Time: Nov 13, 2026 at 08:40 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
@@ -49,7 +49,7 @@ INSERT INTO `admin` (`id`, `username`, `password`) VALUES
 CREATE TABLE `categorys` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `categorys`
@@ -58,7 +58,9 @@ CREATE TABLE `categorys` (
 INSERT INTO `categorys` (`category_id`, `category_name`) VALUES
 (1, 'เนื้อสัตว์'),
 (2, 'ผัก'),
-(3, 'เครื่องดื่ม');
+(3, 'เครื่องดื่ม'),
+(6, 'ไอศครีม'),
+(7, 'ขนม');
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,7 @@ CREATE TABLE `employees` (
   `telephone` varchar(20) DEFAULT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employees`
@@ -95,7 +97,7 @@ CREATE TABLE `orders` (
   `total_price` decimal(10,2) NOT NULL,
   `order_date` datetime NOT NULL,
   `status` varchar(20) DEFAULT 'รอดำเนินการ'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
@@ -120,7 +122,8 @@ INSERT INTO `orders` (`id`, `table_no`, `total_price`, `order_date`, `status`) V
 (29, '1', '0.00', '2025-10-23 09:35:12', 'เสร็จแล้ว'),
 (30, '4', '0.00', '2025-10-23 10:07:16', 'เสร็จแล้ว'),
 (31, '2', '0.00', '2025-10-23 10:22:46', 'เสร็จแล้ว'),
-(32, '1', '0.00', '2025-10-29 14:14:04', 'เสร็จแล้ว');
+(32, '1', '0.00', '2025-10-29 14:14:04', 'เสร็จแล้ว'),
+(33, '1', '2990.00', '2026-11-13 12:48:13', 'รอดำเนินการ');
 
 -- --------------------------------------------------------
 
@@ -136,7 +139,7 @@ CREATE TABLE `order_items` (
   `price` decimal(10,2) NOT NULL,
   `subtotal` decimal(10,2) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'รอดำเนินการ' COMMENT 'status'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_items`
@@ -182,7 +185,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`, 
 (67, 30, 8, 2, '280.00', '560.00', 'เสร็จแล้ว'),
 (68, 30, 9, 2, '250.00', '500.00', 'เสร็จแล้ว'),
 (72, 32, 9, 1, '250.00', '250.00', 'เสร็จแล้ว'),
-(73, 32, 14, 2, '299.00', '598.00', 'เสร็จแล้ว');
+(73, 32, 14, 2, '299.00', '598.00', 'เสร็จแล้ว'),
+(74, 33, 12, 10, '299.00', '2990.00', 'รอดำเนินการ');
 
 -- --------------------------------------------------------
 
@@ -199,7 +203,7 @@ CREATE TABLE `products` (
   `stock` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
@@ -214,7 +218,9 @@ INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `i
 (13, 'ชาบูน้ำดำ หมู ผักสด', 'ชุด 5 ชาบูน้ำดำ หมู ผักสด', '250.00', '1761182047_1761180305_2.jfif', 20, 3, '2025-09-17 04:15:07'),
 (14, 'ชุดรวมมิตรชาบู', 'รวมมิตร หมู ลูกชิ้น ผักสด', '299.00', '1761182034_1758077915_p6.jpg', 20, 3, '2025-09-18 07:33:32'),
 (15, 'สันคอหมูล้วน', 'สันคอหมูล้วน เกาหลี', '220.00', '1761182020_7.jfif', 20, 3, '2025-09-18 07:42:25'),
-(17, 'ชุดรวมหมู่ชาบู', 'ชุดรวมหมู่ชาบู หมูเนื้อแดง ผักรวม', '299.00', '1761182011_1760511137_p7.jpg', 30, 1, '2025-10-15 03:18:12');
+(17, 'ชุดรวมหมู่ชาบู', '', '299.00', '1761182011_1760511137_p7.jpg', 30, 1, '2025-10-15 03:18:12'),
+(28, 'ไอศครีมรสคุกกี้แอนด์ครีม', '', '50.00', '1794555566_55945250e1b5d884e2dcf4fd7d60621b.jpg', 20, 6, '2026-11-13 07:39:26'),
+(29, 'ช็อกโกแลต', '', '60.00', '1794555640_9ea3bc1f18368a90dfaca61ca1d00d69.jpg', 20, 7, '2026-11-13 07:40:40');
 
 --
 -- Indexes for dumped tables
@@ -274,7 +280,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `categorys`
 --
 ALTER TABLE `categorys`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -286,19 +292,19 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Constraints for dumped tables

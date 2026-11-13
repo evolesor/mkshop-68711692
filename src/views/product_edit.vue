@@ -10,8 +10,8 @@
         <label class="me-2 fw-bold">ประเภทสินค้า:</label>
         <select v-model="selectedproduct" class="form-select w-auto">
           <option value="">ทั้งหมด</option>
-          <option v-for="cat in categories" :key="cat.product_id" :value="cat.product_name">
-            {{ cat.product_name }}
+          <option v-for="cat in categories" :key="cat.category_id" :value="cat.category_name">
+            {{ cat.category_name }}
           </option>
         </select>
       </div>
@@ -43,7 +43,7 @@
         <tr v-for="product in paginatedProducts" :key="product.product_id">
           <td>{{ product.product_id }}</td>
           <td>{{ product.product_name }}</td>
-          <td>{{ product.product_name || '-' }}</td>
+          <td>{{ product.category_name || '-' }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.stock }}</td>
           <td>
@@ -106,10 +106,10 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">ประเภทสินค้า</label>
-                <select v-model="editForm.product_id" class="form-select" required>
+                <select v-model="editForm.category_id" class="form-select" required>
                   <option disabled value="">-- เลือกประเภท --</option>
-                  <option v-for="cat in categories" :key="cat.product_id" :value="cat.product_id">
-                    {{ cat.product_name }}
+                  <option v-for="cat in categories" :key="cat.category_id" :value="cat.category_id">
+                    {{ cat.category_name }}
                   </option>
                 </select>
               </div>
@@ -159,7 +159,7 @@ export default {
 
     // Modal & Form
     const isEditMode = ref(false);
-    const editForm = ref({ product_id: null, product_name: "", price: "", stock: "", image: "", product_id: "" });
+    const editForm = ref({ product_id: null, product_name: "", category_id: "", price: "", stock: "", image: "" });
     const newImageFile = ref(null);
     let modalInstance = null;
 
@@ -169,7 +169,7 @@ export default {
 
     const filteredProducts = computed(() => {
       if (!selectedproduct.value) return products.value;
-      return products.value.filter((p) => p.product_name === selectedproduct.value);
+      return products.value.filter((p) => p.category_name === selectedproduct.value);
     });
 
     const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage.value));
@@ -199,7 +199,7 @@ export default {
     // ✅ เปิด modal เพิ่มสินค้า
     const openAddModal = () => {
       isEditMode.value = false;
-      editForm.value = { product_id: null, product_name: "", price: "", stock: "", image: "", product_id: "" };
+      editForm.value = { product_id: null, product_name: "", category_id: "", price: "", stock: "", image: "" };
       newImageFile.value = null;
 
       // เคลียร์ค่าไฟล์ input
@@ -236,19 +236,20 @@ export default {
       formData.append("product_name", editForm.value.product_name);
       formData.append("price", editForm.value.price);
       formData.append("stock", editForm.value.stock);
-      formData.append("product_id", editForm.value.product_id);
+      formData.append("category_id", editForm.value.category_id);
       if (newImageFile.value) formData.append("image", newImageFile.value);
 
       try {
         const res = await fetch("http://localhost/MK_SHOP/php_api/api_product.php", { method: "POST", body: formData });
         const result = await res.json();
-        alert(result.message || result.error);
+        if (!res.ok || result.error) throw new Error(result.error || "บันทึกสินค้าไม่สำเร็จ");
+        alert(result.message || "บันทึกสินค้าเรียบร้อย");
 
         await fetchProducts();
         modalInstance.hide();
 
         // ✅ เคลียร์ค่าฟอร์มและรูปหลังบันทึก
-        editForm.value = { product_id: null, product_name: "", price: "", stock: "", image: "", product_id: "" };
+        editForm.value = { product_id: null, product_name: "", category_id: "", price: "", stock: "", image: "" };
         newImageFile.value = null;
         const fileInput = document.querySelector('#editModal input[type="file"]');
         if (fileInput) fileInput.value = "";
