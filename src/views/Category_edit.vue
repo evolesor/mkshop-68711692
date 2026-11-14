@@ -77,7 +77,7 @@ export default {
 
     const fetchCategorys = async () => {
       try {
-        const response = await fetch("http://localhost/MK_Shop/php_api/api_category.php");
+        const response = await fetch("http://localhost/mkshop-68711692/php_api/api_category.php");
         const result = await response.json();
 
         if (result.success) {
@@ -116,7 +116,7 @@ export default {
 
     // ✅ ใช้ฟังก์ชันเดียวสำหรับทั้งเพิ่ม/แก้ไข
     const saveCategory = async () => {
-      const url = "http://localhost/MK_Shop/php_api/api_category.php";
+      const url = "http://localhost/mkshop-68711692/php_api/api_category.php";
       const method = isEditMode.value ? "PUT" : "POST";
 
       try {
@@ -144,7 +144,7 @@ export default {
     const deleteCategory = async (id) => {
       if (!confirm("คุณต้องการลบข้อมูลนี้ใช่หรือไม่?")) return;
       try {
-        const response = await fetch("http://localhost/MK_Shop/php_api/api_category.php", {
+        const response = await fetch("http://localhost/mkshop-68711692/php_api/api_category.php", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ category_id: id })

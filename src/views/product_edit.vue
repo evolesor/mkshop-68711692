@@ -49,7 +49,7 @@
           <td>
             <img
               v-if="product.image"
-              :src="'http://localhost/MK_SHOP/php_api/uploads/' + product.image"
+              :src="'http://localhost/mkshop-68711692/php_api/uploads/' + product.image"
               width="80"
             />
           </td>
@@ -131,7 +131,7 @@
                 />
                 <div v-if="isEditMode && editForm.image">
                   <p class="mt-2">รูปเดิม:</p>
-                  <img :src="'http://localhost/MK_SHOP/php_api/uploads/' + editForm.image" width="100" />
+                  <img :src="'http://localhost/mkshop-68711692/php_api/uploads/' + editForm.image" width="100" />
                 </div>
               </div>
               <button type="submit" class="btn btn-success w-100">
@@ -181,7 +181,7 @@ export default {
     // ✅ ดึงข้อมูลสินค้า + ประเภทสินค้า
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost/MK_SHOP/php_api/api_product.php");
+        const res = await fetch("http://localhost/mkshop-68711692/php_api/api_product.php");
         const data = await res.json();
         if (data.success) {
           products.value = data.data;
@@ -240,7 +240,7 @@ export default {
       if (newImageFile.value) formData.append("image", newImageFile.value);
 
       try {
-        const res = await fetch("http://localhost/MK_SHOP/php_api/api_product.php", { method: "POST", body: formData });
+        const res = await fetch("http://localhost/mkshop-68711692/php_api/api_product.php", { method: "POST", body: formData });
         const result = await res.json();
         if (!res.ok || result.error) throw new Error(result.error || "บันทึกสินค้าไม่สำเร็จ");
         alert(result.message || "บันทึกสินค้าเรียบร้อย");
@@ -265,7 +265,7 @@ export default {
       const formData = new FormData();
       formData.append("action", "delete");
       formData.append("product_id", id);
-      const res = await fetch("http://localhost/MK_SHOP/php_api/api_product.php", { method: "POST", body: formData });
+      const res = await fetch("http://localhost/mkshop-68711692/php_api/api_product.php", { method: "POST", body: formData });
       const result = await res.json();
       alert(result.message || result.error);
       fetchProducts();

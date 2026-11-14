@@ -38,7 +38,7 @@
       <div class="col-md-3" v-for="product in filteredProducts" :key="product.product_id">
         <div class="card shadow-sm mb-4">
           <img
-            :src="'http://localhost/MK_SHOP/php_api/uploads/' + product.image"
+            :src="'http://localhost/mkshop-68711692/php_api/uploads/' + product.image"
             class="card-img-top"
             height="200"
             :alt="product.product_name"
@@ -140,7 +140,7 @@ export default {
     // ✅ ดึงข้อมูลสินค้า
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost/MK_SHOP/php_api/show_product.php");
+        const response = await fetch("http://localhost/mkshop-68711692/php_api/show_product.php");
         const result = await response.json();
         if (result.success) {
           products.value = result.data;
@@ -234,7 +234,7 @@ export default {
       };
 
       try {
-        const response = await fetch("http://localhost/MK_SHOP/php_api/order.php", {
+        const response = await fetch("http://localhost/mkshop-68711692/php_api/order.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(orderData),
